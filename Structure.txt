@@ -1,0 +1,31 @@
+# CMPM
+Competitive Multiplayer PAC-MAN
+
+############
+#STRUCTURE
+############
+
+Board Class:
+	(1) __init__
+	(2) print
+
+Monster Class:
+	(1) __init__
+	(2) move
+	(3) eaten
+
+PacMan Class:
+	(1) __init__
+	(2) move
+	(3) powerup
+	(4) eaten
+
+BigDot Class:
+	(1) __init__
+	(2) spawn(board)
+		
+Powerup Class:
+	(1) __init__
+	(2) different powerups
+	.	
+	.
