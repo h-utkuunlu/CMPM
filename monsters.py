@@ -14,7 +14,7 @@ class Monster:
 	def spawn(self):
 		self.side = choice([0, 1])
 		
-		if self.side = 1:
+		if self.side:
 			self.pos = (510, 200) # Will depend on the actual board size
-		else:
+		#else:
 			
