@@ -4,24 +4,24 @@ Author: Halil Utku Unlu & Stefan Niehaus
 
 import pygame
 
-screen = pygame.display.set_mode((56*20, 31*20 + 2*20)) 
-fp = open('board.csv')
-		
+#screen = pygame.display.set_mode((56*20, 31*20 + 2*20)) 
 		
 class Board:
 
-	def __init__(self):
+	def __init__(self, screen):
 	
 		self.screen = screen
 		self.color = (0, 0, 255)
 		
 		#Making the board
+		
+		fp = open('board.csv')
 		board = []
 		for line in fp:
 			row = line.strip().split(',')
 			board.append(row)
 		self.board = board
-		
+		fp.close()
 		
 		#Making the walls from the board
 		self.wall_lst = []
@@ -45,7 +45,7 @@ class Board:
 
 class Dots:
 	
-	def __init__(self, Board):
+	def __init__(self, Board, screen):
 	
 		self.color = (255, 255, 0)
 		self.screen = screen
@@ -63,14 +63,15 @@ class Dots:
 		for dots in self.dots_lst:
 			pygame.draw.rect(self.screen, self.color, dots)
 		
-		
+"""		
 		
 maze = Board()
 dots = Dots(maze)
 
 while True:
+	
 	maze.display()
 	dots.display()
 	pygame.display.update()
-
+"""
 

@@ -1,18 +1,22 @@
 import pygame
-import pacman
+import pacman as pm
 import monsters
+import sub_board as board
 from time import sleep
 
 
 pygame.init()
-screen = pygame.display.set_mode((1000, 400))
+screen = pygame.display.set_mode((56*20, 31*20 + 2*20))
 
-pacman1 = pacman.PacMan(screen, 0)
-pacman2 = pacman.PacMan(screen, 1)
+
+maze = board.Board(screen)
+dots = board.Dots(maze, screen)
+
+pacman1 = pm.PacMan(screen, 0, maze)
+pacman2 = pm.PacMan(screen, 1, maze)	
 
 screen.fill((0, 0, 0))
 play = True
-
 
 while play:
 
@@ -23,19 +27,25 @@ while play:
             
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_LEFT:
-				pacman1.move(4)
+				pacman1.change_dir(4)
   
 			if event.key == pygame.K_RIGHT:
-				pacman1.move(6)
+				pacman1.change_dir(6)
                 
 			if event.key == pygame.K_UP:
-				pacman1.move(8)
+				pacman1.change_dir(8)
                 
 			if event.key == pygame.K_DOWN:
-				pacman1.move(2)
-                
+				pacman1.change_dir(2)
 	
-	pacman1.show()
-	pacman2.show()
+	screen.fill((0, 0, 0))
+	
+	maze.display()
+	dots.display()
+	
+	pacman1.move(pacman1.direction)
+	pacman2.move(pacman2.direction)
+	
 	pygame.display.update()
-	sleep(2**-7)
+	
+	sleep(2**-10)
