@@ -4,7 +4,7 @@ Author: Halil Utku Unlu & Stefan Niehaus
 
 import pygame
 
-screen = pygame.display.set_mode((56*10, 31*10 + 20)) 
+screen = pygame.display.set_mode((56*20, 31*20 + 2*20)) 
 fp = open('board.csv')
 		
 		
@@ -29,8 +29,8 @@ class Board:
 		for i_row in range(len(self.board)):
 			for i_col in range(len(self.board[i_row])):
 				if self.board[i_row][i_col] == '#':
-					wall = pygame.Rect(10*(i_col), 10*(i_row), 10, 10)
-					inside = pygame.Rect(10*(i_col) +1 , 10*(i_row) + 1, 8, 8)
+					wall = pygame.Rect(20*(i_col), 20*(i_row), 20, 20)
+					inside = pygame.Rect(20*(i_col) + 1 , 20*(i_row) + 1, 18, 18)
 					
 					#wall_lst will be used to identify collisions
 					self.wall_lst.append(wall)
@@ -54,7 +54,7 @@ class Dots:
 		for i_row in range(len(self.board)):
 				for i_col in range(len(self.board[i_row])):
 					if self.board[i_row][i_col] == '':
-						dots = pygame.Rect(10*(i_col) + 4, 10*(i_row) + 4 , 2, 2)
+						dots = pygame.Rect(20*(i_col) + 9, 20*(i_row) + 9 , 2, 2)
 					
 						#List of all the centers of the dots
 						self.dots_lst.append(dots)
