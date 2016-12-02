@@ -7,16 +7,21 @@ class PacMan:
 		self.board = board
 		self.side = side
 				
-		self.skin_main1 = pygame.image.load("skins/main1_s.png")
-		self.skin_main2 = pygame.image.load("skins/main2_s.png")
-		self.skin_main3 = pygame.image.load("skins/main3_s.png")
+		skin_main1 = pygame.image.load("skins/main1_s.png")
+		skin_main2 = pygame.image.load("skins/main2_s.png")
+		skin_main3 = pygame.image.load("skins/main3_s.png")
+		
+		self.skin_main = [skin_main1, skin_main2, skin_main3, skin_main2]
+		self.skin_select = 0
+		
 		self.skin_over1 = pygame.image.load("skins/over1_s.png")
 		self.skin_over2 = pygame.image.load("skins/over2_s.png")
 		self.skin_over3 = pygame.image.load("skins/over3_s.png")
 		
+		
 		self.direction = None
 		
-		self.speed = 2
+		self.speed = 1
 		
 		if self.side:
 			found = False
@@ -46,17 +51,31 @@ class PacMan:
 					break
 			self.pos = start_pos # depends on the board
 		
-		self.rect = pygame.Rect(self.pos[0], self.pos[1], 20, 20)
+		self.rect = pygame.Rect(self.pos[0], self.pos[1], 18, 18)
 		
 	def show(self):
 		
-		pygame.draw.rect(self.screen, (50, 50, 50), self.rect)
-		self.screen.blit(self.skin_main1, self.rect.topleft)
-		pygame.display.update()
+		pygame.draw.rect(self.screen, (0, 0, 0), self.rect)
 		
+		if self.direction == 8:
+			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], 90)
+			
+		elif self.direction == 2:	
+			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], -90)
+		
+		elif self.direction == 4:
+			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], 180)
+		
+		elif self.direction == 6 or self.direction == None:
+			skin = self.skin_main[self.skin_select // 8]	
+		
+		self.screen.blit(skin, self.rect.topleft)
+				
 	def move(self, direction): 
 		
-		#print(self.rect.topleft)
+		#print(self.skin_select)
+		
+		old_pos = self.rect.topleft
 		
 		if direction == 4:
 			opposite = 6
@@ -75,8 +94,15 @@ class PacMan:
 		#print(self.pos)
 		
 		if self.rect.collidelist(self.board.wall_lst) != -1: #wall symbol or indicator
-			self.move(opposite) # Not sure if this will work 
+			self.rect.topleft = old_pos
 		
+		if old_pos != self.rect.topleft:
+			
+			self.skin_select += 1
+		
+			if self.skin_select == 32:
+				self.skin_select = 0
+	
 		self.show()
 			
 		
