@@ -51,7 +51,7 @@ class PacMan:
 					break
 			self.pos = start_pos # depends on the board
 		
-		self.rect = pygame.Rect(self.pos[0], self.pos[1], 18, 18)
+		self.rect = pygame.Rect(self.pos[0], self.pos[1], 10, 10)
 		
 	def show(self):
 		
@@ -69,7 +69,7 @@ class PacMan:
 		elif self.direction == 6 or self.direction == None:
 			skin = self.skin_main[self.skin_select // 8]	
 		
-		self.screen.blit(skin, self.rect.topleft)
+		self.screen.blit(skin, (self.rect.topleft[0] - 5, self.rect.topleft[1] - 5))
 				
 	def move(self, direction): 
 		
@@ -77,17 +77,16 @@ class PacMan:
 		
 		old_pos = self.rect.topleft
 		
-		if direction == 4:
-			opposite = 6
+		if direction == 4: # 8 = up, 2 = down, 4 = left, 6 = right (check numpad)
 			self.rect.topleft = (self.rect.topleft[0] - self.speed, self.rect.topleft[1])
+			
 		elif direction == 6:
-			opposite = 4
 			self.rect.topleft = (self.rect.topleft[0] + self.speed, self.rect.topleft[1])
+			
 		elif direction == 8:
-			opposite = 2
-			self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1]  - self.speed)		
+			self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1]  - self.speed)
+					
 		elif direction == 2:
-			opposite = 8
 			self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1]  + self.speed)
 		else:
 			pass
@@ -96,7 +95,7 @@ class PacMan:
 		if self.rect.collidelist(self.board.wall_lst) != -1: #wall symbol or indicator
 			self.rect.topleft = old_pos
 		
-		if old_pos != self.rect.topleft:
+		if old_pos != self.rect.topleft: #Only switch skins when not colliding against a wall
 			
 			self.skin_select += 1
 		

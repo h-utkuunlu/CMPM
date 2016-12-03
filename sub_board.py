@@ -3,8 +3,6 @@ Author: Halil Utku Unlu & Stefan Niehaus
 """
 
 import pygame
-
-#screen = pygame.display.set_mode((56*20, 31*20 + 2*20)) 
 		
 class Board:
 
@@ -14,7 +12,6 @@ class Board:
 		self.color = (0, 0, 255)
 		
 		#Making the board
-		
 		fp = open('board.csv')
 		board = []
 		for line in fp:
@@ -26,6 +23,7 @@ class Board:
 		#Making the walls from the board
 		self.wall_lst = []
 		self.interior_lst = []
+		
 		for i_row in range(len(self.board)):
 			for i_col in range(len(self.board[i_row])):
 				if self.board[i_row][i_col] == '#':
@@ -37,8 +35,10 @@ class Board:
 					self.interior_lst.append(inside)	
 	
 	def display(self):
+	
 		for wall in self.wall_lst:
 			pygame.draw.rect(self.screen, self.color, wall)
+			
 		for inside in self.interior_lst:
 			pygame.draw.rect(self.screen, (0,0,0), inside)
 			
@@ -51,6 +51,7 @@ class Dots:
 		self.screen = screen
 		self.dots_lst = []
 		self.board = Board.board
+		
 		for i_row in range(len(self.board)):
 				for i_col in range(len(self.board[i_row])):
 					if self.board[i_row][i_col] == '':
@@ -63,8 +64,7 @@ class Dots:
 		for dots in self.dots_lst:
 			pygame.draw.rect(self.screen, self.color, dots)
 		
-"""		
-		
+"""			
 maze = Board()
 dots = Dots(maze)
 
