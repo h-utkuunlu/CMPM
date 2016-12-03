@@ -18,8 +18,8 @@ class PacMan:
 		self.skin_over2 = pygame.image.load("skins/over2_s.png")
 		self.skin_over3 = pygame.image.load("skins/over3_s.png")
 		
-		
 		self.direction = None
+		self.prev_direction = None
 		
 		self.speed = 1
 		
@@ -51,44 +51,64 @@ class PacMan:
 					break
 			self.pos = start_pos # depends on the board
 		
-		self.rect = pygame.Rect(self.pos[0], self.pos[1], 10, 10)
+		self.rect = pygame.Rect(self.pos[0], self.pos[1], 20, 20)
 		
 	def show(self):
 		
 		pygame.draw.rect(self.screen, (0, 0, 0), self.rect)
 		
-		if self.direction == 8:
+		if self.direction == "up":
+			#print("Showing")
 			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], 90)
 			
-		elif self.direction == 2:	
+		elif self.direction == "down":	
 			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], -90)
-		
-		elif self.direction == 4:
+			
+		elif self.direction == "left":
 			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], 180)
 		
-		elif self.direction == 6 or self.direction == None:
-			skin = self.skin_main[self.skin_select // 8]	
-		
-		self.screen.blit(skin, (self.rect.topleft[0] - 5, self.rect.topleft[1] - 5))
+		elif self.direction == "right" or self.direction == None:
+			skin = self.skin_main[self.skin_select // 8]
+			
+					
+		self.screen.blit(skin, (self.rect.topleft[0], self.rect.topleft[1]))
 				
 	def move(self, direction): 
-		
-		#print(self.skin_select)
-		
+				
+		pos = (self.rect.center[0] // 20, self.rect.center[1] // 20)
+		#print(pos)
 		old_pos = self.rect.topleft
 		
-		if direction == 4: # 8 = up, 2 = down, 4 = left, 6 = right (check numpad)
-			self.rect.topleft = (self.rect.topleft[0] - self.speed, self.rect.topleft[1])
+		if direction == "up":
 			
-		elif direction == 6:
-			self.rect.topleft = (self.rect.topleft[0] + self.speed, self.rect.topleft[1])
+			if self.board.board[pos[1]-1][pos[0]] == "" and self.prev_direction != None:
+				self.rect.topleft = ((pos[0])*20, (pos[1]-1)*20)
+				self.prev_direction = None
+			else:
+				self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] - self.speed)
 			
-		elif direction == 8:
-			self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1]  - self.speed)
+		elif direction == "down":
+			if self.board.board[pos[1]+1][pos[0]] == ""and self.prev_direction != None:
+				self.rect.topleft = ((pos[0])*20, (pos[1]+1)*20)
+				self.prev_direction = None
+			else:
+				self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] + self.speed)
+			
+		elif direction == "left":
+			if self.board.board[pos[1]][pos[0]-1] == "" and self.prev_direction != None:
+				self.rect.topleft = ((pos[0]-1)*20, (pos[1])*20)
+				self.prev_direction = None
+			else:
+				self.rect.topleft = (self.rect.topleft[0]  - self.speed, self.rect.topleft[1])
 					
-		elif direction == 2:
-			self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1]  + self.speed)
-		else:
+		elif direction == "right":
+			if self.board.board[pos[1]][pos[0]+1] == "" and self.prev_direction != None:
+				self.rect.topleft = ((pos[0]+1)*20, (pos[1])*20)
+				self.prev_direction = None
+			else:
+			
+				self.rect.topleft = (self.rect.topleft[0] + self.speed, self.rect.topleft[1])
+		else:	
 			pass
 		#print(self.pos)
 		
@@ -103,7 +123,11 @@ class PacMan:
 				self.skin_select = 0
 	
 		self.show()
-			
+		self.prev_direction = None
 		
-	def change_dir(self, direction): # 8 = up, 2 = down, 4 = left, 6 = right (check numpad)
+	def change_dir(self, direction):
+		if direction != self.direction:
+			self.prev_direction = self.direction
 		self.direction = direction
+		
+		print("Prev:", self.prev_direction, "Now:", self.direction)

@@ -26,28 +26,28 @@ while play:
             
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_LEFT:
-				pacman2.change_dir(4)
+				pacman2.change_dir("left")
   
 			if event.key == pygame.K_RIGHT:
-				pacman2.change_dir(6)
+				pacman2.change_dir("right")
                 
 			if event.key == pygame.K_UP:
-				pacman2.change_dir(8)
+				pacman2.change_dir("up")
                 
 			if event.key == pygame.K_DOWN:
-				pacman2.change_dir(2)
+				pacman2.change_dir("down")
 	
 			if event.key == pygame.K_a:
-				pacman1.change_dir(4)
+				pacman1.change_dir("left")
   
 			if event.key == pygame.K_d:
-				pacman1.change_dir(6)
+				pacman1.change_dir("right")
                 
 			if event.key == pygame.K_w:
-				pacman1.change_dir(8)
+				pacman1.change_dir("up")
                 
 			if event.key == pygame.K_s:
-				pacman1.change_dir(2)
+				pacman1.change_dir("down")
 	
 	screen.fill((0, 0, 0))
 	
