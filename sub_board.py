@@ -49,19 +49,32 @@ class Dots:
 	
 		self.color = (255, 255, 0)
 		self.screen = screen
-		self.dots_lst = []
+		self.dots_lst1 = []
+		self.dots_lst2 = []
 		self.board = Board.board
 		
 		for i_row in range(len(self.board)):
-				for i_col in range(len(self.board[i_row])):
+				for i_col in range(len(self.board[i_row])//2):
 					if self.board[i_row][i_col] == '':
 						dots = pygame.Rect(20*(i_col) + 9, 20*(i_row) + 9 , 2, 2)
 					
-						#List of all the centers of the dots
-						self.dots_lst.append(dots)
+						#List of all the squares (dots) for the 1st screen
+						self.dots_lst1.append(dots)
+						
+		for i_row in range(len(self.board)):
+				for i_col in range(len(self.board[i_row])//2):
+					if self.board[i_row][i_col + len(self.board[i_row])//2] == '':
+						dots = pygame.Rect(20*(i_col + (len(self.board[i_row])//2)) + 9, 20*(i_row) + 9 , 2, 2)
+					
+						#List of all the squares (dots) for the 2nd screen
+						self.dots_lst2.append(dots)
 	
 	def display(self):
-		for dots in self.dots_lst:
+	
+		for dots in self.dots_lst1:
+			pygame.draw.rect(self.screen, self.color, dots)
+			
+		for dots in self.dots_lst2:
 			pygame.draw.rect(self.screen, self.color, dots)
 		
 """			
