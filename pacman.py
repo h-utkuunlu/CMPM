@@ -114,8 +114,9 @@ class PacMan:
 		
 		if self.rect.collidelist(self.board.wall_lst) != -1: #wall symbol or indicator
 			self.rect.topleft = old_pos
-		
-		if old_pos != self.rect.topleft: #Only switch skins when not colliding against a wall
+			
+		#Only switch skins when not colliding against a wall
+		if old_pos != self.rect.topleft: 
 			
 			self.skin_select += 1
 		
