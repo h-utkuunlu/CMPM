@@ -85,71 +85,101 @@ class PacMan:
 			go = (0, 1)
 		elif self.prev_direction == "right":
 			go = (1, 0)
-			print("We will keep moving:", go)
 		elif self.prev_direction == "left":
 			go = (-1, 0)
 		else:
 			go = 0
 		
 		if direction == "up":
-			print(old_pos)
-			if self.board.board[pos[1]-1][pos[0]] == "" and self.prev_direction != None:
-			
+			if self.prev_direction != None and self.board.board[pos[1]-1][pos[0]] == "":
 				keep_going = True
-				print("We want the top left to get here:", ((pos[0])*20, (pos[1]-1)*20 + 20))
-				if self.rect.topleft == ((pos[0])*20, (pos[1]-1)*20 + 20):
+			
+				if self.rect.topleft == (pos[0]*20, pos[1]*20):
 					keep_going = False
+				
 				while keep_going:
-					self.rect.topleft = (self.rect.topleft[0] + go[0], self.rect.topleft[1] + go[1])
-					print(self.rect.topleft)
-					self.show()
-					pygame.display.update()
-					sleep(2**-2)
-					if self.rect.topleft == ((pos[0])*20, (pos[1]-1)*20 + 20):
+					diff = pos[0]*20 - self.rect.topleft[0]
+					if self.prev_direction == "right":
+						self.rect.topleft = (self.rect.topleft[0] + go[0] * diff, self.rect.topleft[1])
+					elif self.prev_direction == "left":
+						self.rect.topleft = (self.rect.topleft[0] - go[0] * diff, self.rect.topleft[1])
+					elif self.prev_direction == "down":
+						self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] + self.speed)
+						break
+					if self.rect.topleft[0] == pos[0]*20:
 						keep_going = False
 				
 			else:
 				self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] - self.speed)
 			
 		elif direction == "down":
-			if self.board.board[pos[1]+1][pos[0]] == ""and self.prev_direction != None:
-				
+			if self.prev_direction != None and self.board.board[pos[1]+1][pos[0]] == "":
+			
 				keep_going = True
-				print("We want the top left to get here:", ((pos[0])*20, (pos[1]+1)*20 + 20))
-				if self.rect.topleft == ((pos[0])*20, (pos[1]-1)*20 + 20):
+				if self.rect.topleft == (pos[0]*20, pos[1]*20):
 					keep_going = False
+					
 				while keep_going:
-					self.rect.topleft = (self.rect.topleft[0] + go[0], self.rect.topleft[1] + go[1])
-					print(self.rect.topleft)
-					self.show()
-					pygame.display.update()
-					sleep(2**-9)
-					if self.rect.topleft == ((pos[0])*20, (pos[1]-1)*20 + 20):
+					diff = pos[0]*20 - self.rect.topleft[0]
+					if self.prev_direction == "right":
+						self.rect.topleft = (self.rect.topleft[0] + go[0] * diff, self.rect.topleft[1])
+					elif self.prev_direction == "left":
+						self.rect.topleft = (self.rect.topleft[0] - go[0] * diff, self.rect.topleft[1])
+					elif self.prev_direction == "up":
+						self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] - self.speed)
+						break
+					if self.rect.topleft[0] == pos[0]*20:
 						keep_going = False
-				
-				
-				
-				
 				
 			else:
 				self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] + self.speed)
-			
+				
 		elif direction == "left":
 			if self.board.board[pos[1]][pos[0]-1] == "" and self.prev_direction != None:
-				self.rect.topleft = ((pos[0]-1)*20, (pos[1])*20)
+			
+				keep_going = True
+				if self.rect.topleft == (pos[0]*20, pos[1]*20):
+					keep_going = False
+					
+				while keep_going:
+					diff = pos[1]*20 - self.rect.topleft[1]					
+					if self.prev_direction == "up":
+						self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] - go[1] * diff)
+					elif self.prev_direction == "down":
+						self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] + go[1] * diff)
+					elif self.prev_direction == "right":
+						self.rect.topleft = (self.rect.topleft[0] - self.speed, self.rect.topleft[1])
+						break
+						
+					if self.rect.topleft[1] == pos[1]*20:
+						keep_going = False
 			else:
-				self.rect.topleft = (self.rect.topleft[0]  - self.speed, self.rect.topleft[1])
+				self.rect.topleft = (self.rect.topleft[0]  - self.speed, self.rect.topleft[1])		
 					
 		elif direction == "right":
 			if self.board.board[pos[1]][pos[0]+1] == "" and self.prev_direction != None:
-				self.rect.topleft = ((pos[0]+1)*20, (pos[1])*20)
+				keep_going = True
+				if self.rect.topleft == (pos[0]*20, pos[1]*20):
+					keep_going = False
+					
+				while keep_going:
+					diff = pos[1]*20 - self.rect.topleft[1]				
+					if self.prev_direction == "up":
+						self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] - go[1] * diff)
+					elif self.prev_direction == "down":
+						self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] + go[1] * diff)
+					elif self.prev_direction == "left":
+						self.rect.topleft = (self.rect.topleft[0] + self.speed, self.rect.topleft[1])
+						break
+						
+					if self.rect.topleft[1] == pos[1]*20:
+						keep_going = False
 			else:
-			
-				self.rect.topleft = (self.rect.topleft[0] + self.speed, self.rect.topleft[1])
+				self.rect.topleft = (self.rect.topleft[0] + self.speed, self.rect.topleft[1])		
+				
 		else:	
 			pass
-		
-		
+	
 		if self.rect.collidelist(self.board.wall_lst) != -1: #wall symbol or indicator
 			self.rect.topleft = old_pos
 		
@@ -168,4 +198,4 @@ class PacMan:
 		if direction != self.direction:
 			self.prev_direction = self.direction
 		self.direction = direction
-		print("Prev:", self.prev_direction, "Now:", self.direction)
+		#print("Prev:", self.prev_direction, "Now:", self.direction)

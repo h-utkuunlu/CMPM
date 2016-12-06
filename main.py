@@ -69,4 +69,4 @@ while play:
 	
 	pygame.display.update()
 	
-	sleep(2**-7)
+	sleep(2**-9)
