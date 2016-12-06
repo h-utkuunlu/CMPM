@@ -1,5 +1,7 @@
 from random import choice
 import pygame
+import sub_board as board
+from time import sleep
 
 class PacMan:
 	def __init__(self, screen, side, board):
@@ -58,65 +60,100 @@ class PacMan:
 		pygame.draw.rect(self.screen, (0, 0, 0), self.rect)
 		
 		if self.direction == "up":
-			#print("Showing")
 			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], 90)
 			
 		elif self.direction == "down":	
 			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], -90)
-			
+		
 		elif self.direction == "left":
 			skin = pygame.transform.rotate(self.skin_main[self.skin_select // 8], 180)
 		
 		elif self.direction == "right" or self.direction == None:
-			skin = self.skin_main[self.skin_select // 8]
-			
-					
+			skin = self.skin_main[self.skin_select // 8]	
+		
 		self.screen.blit(skin, (self.rect.topleft[0], self.rect.topleft[1]))
 				
 	def move(self, direction): 
-				
+		
 		pos = (self.rect.center[0] // 20, self.rect.center[1] // 20)
-		#print(pos)
 		old_pos = self.rect.topleft
 		
+		# 8 = up, 2 = down, 4 = left, 6 = right (check numpad)
+		if self.prev_direction == "up":
+			go = (0, -1)
+		elif self.prev_direction == "down":
+			go = (0, 1)
+		elif self.prev_direction == "right":
+			go = (1, 0)
+			print("We will keep moving:", go)
+		elif self.prev_direction == "left":
+			go = (-1, 0)
+		else:
+			go = 0
+		
 		if direction == "up":
-			
+			print(old_pos)
 			if self.board.board[pos[1]-1][pos[0]] == "" and self.prev_direction != None:
-				self.rect.topleft = ((pos[0])*20, (pos[1]-1)*20)
-				self.prev_direction = None
+			
+				keep_going = True
+				print("We want the top left to get here:", ((pos[0])*20, (pos[1]-1)*20 + 20))
+				if self.rect.topleft == ((pos[0])*20, (pos[1]-1)*20 + 20):
+					keep_going = False
+				while keep_going:
+					self.rect.topleft = (self.rect.topleft[0] + go[0], self.rect.topleft[1] + go[1])
+					print(self.rect.topleft)
+					self.show()
+					pygame.display.update()
+					sleep(2**-2)
+					if self.rect.topleft == ((pos[0])*20, (pos[1]-1)*20 + 20):
+						keep_going = False
+				
 			else:
 				self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] - self.speed)
 			
 		elif direction == "down":
 			if self.board.board[pos[1]+1][pos[0]] == ""and self.prev_direction != None:
-				self.rect.topleft = ((pos[0])*20, (pos[1]+1)*20)
-				self.prev_direction = None
+				
+				keep_going = True
+				print("We want the top left to get here:", ((pos[0])*20, (pos[1]+1)*20 + 20))
+				if self.rect.topleft == ((pos[0])*20, (pos[1]-1)*20 + 20):
+					keep_going = False
+				while keep_going:
+					self.rect.topleft = (self.rect.topleft[0] + go[0], self.rect.topleft[1] + go[1])
+					print(self.rect.topleft)
+					self.show()
+					pygame.display.update()
+					sleep(2**-9)
+					if self.rect.topleft == ((pos[0])*20, (pos[1]-1)*20 + 20):
+						keep_going = False
+				
+				
+				
+				
+				
 			else:
 				self.rect.topleft = (self.rect.topleft[0], self.rect.topleft[1] + self.speed)
 			
 		elif direction == "left":
 			if self.board.board[pos[1]][pos[0]-1] == "" and self.prev_direction != None:
 				self.rect.topleft = ((pos[0]-1)*20, (pos[1])*20)
-				self.prev_direction = None
 			else:
 				self.rect.topleft = (self.rect.topleft[0]  - self.speed, self.rect.topleft[1])
 					
 		elif direction == "right":
 			if self.board.board[pos[1]][pos[0]+1] == "" and self.prev_direction != None:
 				self.rect.topleft = ((pos[0]+1)*20, (pos[1])*20)
-				self.prev_direction = None
 			else:
 			
 				self.rect.topleft = (self.rect.topleft[0] + self.speed, self.rect.topleft[1])
 		else:	
 			pass
-		#print(self.pos)
+		
 		
 		if self.rect.collidelist(self.board.wall_lst) != -1: #wall symbol or indicator
 			self.rect.topleft = old_pos
-			
-		#Only switch skins when not colliding against a wall
-		if old_pos != self.rect.topleft: 
+		
+		if old_pos != self.rect.topleft: #Only switch skins when not colliding against a wall
 			
 			self.skin_select += 1
 		
@@ -125,10 +162,10 @@ class PacMan:
 	
 		self.show()
 		self.prev_direction = None
+			
 		
-	def change_dir(self, direction):
+	def change_dir(self, direction): # 8 = up, 2 = down, 4 = left, 6 = right (check numpad)
 		if direction != self.direction:
 			self.prev_direction = self.direction
 		self.direction = direction
-		
 		print("Prev:", self.prev_direction, "Now:", self.direction)

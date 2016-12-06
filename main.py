@@ -57,16 +57,16 @@ while play:
 	pacman1.move(pacman1.direction)
 	pacman2.move(pacman2.direction)
 	
-	contact_dot1= pacman1.rect.collidelist(dots.dots_lst1)
+	contact_dot1 = pacman1.rect.collidelist(dots.dots_lst1)
 	
 	if contact_dot1 != -1:
 		dots.dots_lst1.remove(dots.dots_lst1[contact_dot1])
 	
-	contact_dot2= pacman2.rect.collidelist(dots.dots_lst2)
+	contact_dot2 = pacman2.rect.collidelist(dots.dots_lst2)
 	
 	if contact_dot2 != -1:
 		dots.dots_lst2.remove(dots.dots_lst2[contact_dot2])
 	
 	pygame.display.update()
 	
-	sleep(2**-9)
+	sleep(2**-7)
