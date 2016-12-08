@@ -89,13 +89,11 @@ class PacMan:
 			go = (-1, 0)
 		else:
 			go = 0
+			
+		keep_going = True
 		
 		if direction == "up":
 			if self.prev_direction != None and self.board.board[pos[1]-1][pos[0]] == "":
-				keep_going = True
-			
-				if self.rect.topleft == (pos[0]*20, pos[1]*20):
-					keep_going = False
 				
 				while keep_going:
 					diff = pos[0]*20 - self.rect.topleft[0]
@@ -114,10 +112,6 @@ class PacMan:
 			
 		elif direction == "down":
 			if self.prev_direction != None and self.board.board[pos[1]+1][pos[0]] == "":
-			
-				keep_going = True
-				if self.rect.topleft == (pos[0]*20, pos[1]*20):
-					keep_going = False
 					
 				while keep_going:
 					diff = pos[0]*20 - self.rect.topleft[0]
@@ -136,10 +130,6 @@ class PacMan:
 				
 		elif direction == "left":
 			if self.board.board[pos[1]][pos[0]-1] == "" and self.prev_direction != None:
-			
-				keep_going = True
-				if self.rect.topleft == (pos[0]*20, pos[1]*20):
-					keep_going = False
 					
 				while keep_going:
 					diff = pos[1]*20 - self.rect.topleft[1]					
@@ -158,9 +148,6 @@ class PacMan:
 					
 		elif direction == "right":
 			if self.board.board[pos[1]][pos[0]+1] == "" and self.prev_direction != None:
-				keep_going = True
-				if self.rect.topleft == (pos[0]*20, pos[1]*20):
-					keep_going = False
 					
 				while keep_going:
 					diff = pos[1]*20 - self.rect.topleft[1]				
