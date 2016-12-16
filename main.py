@@ -1,12 +1,11 @@
 import pygame
 import pacman as pm
 import monsters
-import sub_board as board
+import board
 from time import sleep
 
 pygame.init()
-screen = pygame.display.set_mode((56*20, 31*20 + 2*20))
-
+screen = pygame.display.set_mode((57*20, 31*20 + 2*20))
 
 maze = board.Board(screen)
 dots = board.Dots(maze, screen)
@@ -53,9 +52,10 @@ while play:
 	
 	maze.display()
 	dots.display()
-	
-	pacman1.move(pacman1.direction)
-	pacman2.move(pacman2.direction)
+	pacman1.show()
+	pacman2.show()
+	pacman1.proceed()
+	pacman2.proceed()
 	
 	contact_dot1= pacman1.rect.collidelist(dots.dots_lst)
 	
