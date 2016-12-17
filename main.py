@@ -3,21 +3,58 @@ import pacman as pm
 import monsters
 import board
 from time import sleep
+from random import choice, randint
+
+def monster_spawn(side):
+	"""
+	Spawns a monster at the specified side of the board
+	"""
+	
+	if side:
+		monster = monsters.Monster(maze, screen, 1, pacman1)
+		right_monsters.append(monster)
+	else:
+		monster = monsters.Monster(maze, screen, 0, pacman0)
+		left_monsters.append(monster)
+
+def endgame(pacman):
+	"""
+	Function to take care of the end game sequence of events
+	"""
 
 pygame.init()
 screen = pygame.display.set_mode((57*20, 31*20 + 2*20))
 
+#Create maze
+
 maze = board.Board(screen)
-dots = board.Dots(maze, screen)
 
-pacman1 = pm.PacMan(screen, 0, maze)
-pacman2 = pm.PacMan(screen, 1, maze)	
+#Create collectible dots
 
-screen.fill((0, 0, 0))
+right_dots = board.Dots(maze, screen, 1)
+left_dots = board.Dots(maze, screen, 0)
+
+#Create players
+
+pacman0 = pm.PacMan(screen, 0, maze)
+pacman1 = pm.PacMan(screen, 1, maze)	
+
+#Variable set up
+
+power_up_l = None
+power_up_r = None
+left_monsters = []
+right_monsters = []
 play = True
+loser = None
+power_up_timer = 500
+
+#Main
 
 while play:
-
+	
+	#Controls
+	
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			play = False
@@ -25,48 +62,173 @@ while play:
             
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_LEFT:
-				pacman2.change_dir("left")
-  
-			if event.key == pygame.K_RIGHT:
-				pacman2.change_dir("right")
-                
-			if event.key == pygame.K_UP:
-				pacman2.change_dir("up")
-                
-			if event.key == pygame.K_DOWN:
-				pacman2.change_dir("down")
-	
-			if event.key == pygame.K_a:
 				pacman1.change_dir("left")
   
-			if event.key == pygame.K_d:
+			if event.key == pygame.K_RIGHT:
 				pacman1.change_dir("right")
                 
-			if event.key == pygame.K_w:
+			if event.key == pygame.K_UP:
 				pacman1.change_dir("up")
                 
-			if event.key == pygame.K_s:
+			if event.key == pygame.K_DOWN:
 				pacman1.change_dir("down")
+	
+			if event.key == pygame.K_a:
+				pacman0.change_dir("left")
+  
+			if event.key == pygame.K_d:
+				pacman0.change_dir("right")
+                
+			if event.key == pygame.K_w:
+				pacman0.change_dir("up")
+                
+			if event.key == pygame.K_s:
+				pacman0.change_dir("down")
 	
 	screen.fill((0, 0, 0))
 	
 	maze.display()
-	dots.display()
+	
+	#Check if the collectible dots are present. If there is none, change the variable to None for further use
+	
+	if right_dots:
+		right_dots.display()
+		if not right_dots.dots_lst:
+			right_dots = None
+	
+	if left_dots:
+		left_dots.display()
+		if not left_dots.dots_lst:
+			left_dots = None
+
+	pacman0.show()
 	pacman1.show()
-	pacman2.show()
+	
+	#Randomized monster creator. Upper limit of the random integer determines the likelihood of a monster spawning	
+	
+	selector = randint(0, 500)
+
+	if selector == 1:
+		if len(left_monsters) > len(right_monsters):
+			monster_spawn(1)
+	
+		elif len(left_monsters) < len(right_monsters):
+			monster_spawn(0)
+
+		else:
+			monster_spawn(choice([0,1]))
+	
+	#Display monsters if there are any
+	
+	for monster in left_monsters:
+		monster.display()
+		monster.proceed()
+	
+	for monster in right_monsters:
+		monster.display()
+		monster.proceed()
+	
+	#Power up display and check
+	
+	if power_up_l:
+		power_up_l.display()
+		if pacman0.rect.colliderect(power_up_l):
+			pacman0.power = True
+			power_up_l = None
+			pacman0.power_time = power_up_timer
+				
+	if power_up_r:
+		power_up_r.display()
+		if pacman1.rect.colliderect(power_up_r):
+			pacman1.power = True
+			power_up_r = None
+			pacman1.power_time = power_up_timer
+	
+	# Proceed with the game
+	
+	pacman0.proceed()
 	pacman1.proceed()
-	pacman2.proceed()
 	
-	contact_dot1= pacman1.rect.collidelist(dots.dots_lst)
+	# Check if the monsters caught any of the players
 	
-	if contact_dot1 != -1:
-		dots.dots_lst.remove(dots.dots_lst[contact_dot1])
+	if left_monsters and not pacman0.power:	
+		monster_catch = pacman0.rect.collidelist(left_monsters)
+		
+		if monster_catch != -1:
+			game_over = pacman0
+			play = False
 	
-	contact_dot2= pacman2.rect.collidelist(dots.dots_lst)
+	if right_monsters and not pacman1.power:
+		monster_catch = pacman1.rect.collidelist(right_monsters)
+		
+		if monster_catch != -1:
+			game_over = pacman1
+			play = False
 	
-	if contact_dot2 != -1:
-		dots.dots_lst.remove(dots.dots_lst[contact_dot2])
+	# Check if the pacman is collecting the dots
+			
+	if left_dots:
+		contact_dot1= pacman0.rect.collidelist(left_dots.dots_lst)
+	
+		if contact_dot1 != -1:
+			#print("Collision: Pacman 1", contact_dot1)
+			left_dots.dots_lst.remove(left_dots.dots_lst[contact_dot1])
+	
+	if right_dots:
+		contact_dot2= pacman1.rect.collidelist(right_dots.dots_lst)
+	
+		if contact_dot2 != -1:
+			#print("Collision: Pacman 2", contact_dot2)
+			right_dots.dots_lst.remove(right_dots.dots_lst[contact_dot2])
+	
+	# Check for the spawning of power-up and controlling if the time expired or not
+		
+	if not left_dots and not power_up_l and not pacman0.power:
+		#print("Pacman 1 finished the dots")
+		power_up_l = board.Power(maze.board, screen)
+		power_up_l.spawn(0)
+		
+	if not right_dots and not power_up_r and not pacman1.power:
+		#print("Pacman 2 finished the dots")
+		power_up_r = board.Power(maze.board, screen)
+		power_up_r.spawn(1)
+	
+	# Power up controls and monster-eating checks
+	
+	if pacman0.power_time:
+		pacman0.power_time -= 1
+
+		if left_monsters:
+			eaten_monster = pacman0.rect.collidelist(left_monsters)
+		
+			if eaten_monster != -1:
+				left_monsters.remove(left_monsters[eaten_monster])
+				monster_spawn(1)
+		
+	elif not left_dots and not power_up_l and not pacman0.power_time:
+		pacman0.power = False
+		left_dots = board.Dots(maze, screen, 0)
+	
+	if pacman1.power_time:
+		pacman1.power_time -= 1
+		#print("Remaining:", pacman1.power_time)
+		
+		if right_monsters:
+			eaten_monster = pacman1.rect.collidelist(right_monsters)
+		
+			if eaten_monster != -1:
+				right_monsters.remove(right_monsters[eaten_monster])
+				monster_spawn(0)
+		
+	elif not right_dots and not power_up_r and not pacman1.power_time:
+		pacman1.power = False
+		right_dots = board.Dots(maze, screen, 1)
 	
 	pygame.display.update()
+	sleep(2**-8)
+
+# Game over adjustments
+
+endgame(loser)
+				
 	
-	sleep(2**-9)
