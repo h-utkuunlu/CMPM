@@ -28,10 +28,6 @@ class PacMan:
 		self.skin_over = [self.skin_over1, self.skin_over2, self.skin_over3]
 		
 		self.skin_select = 0
-		
-		self.skin_over1 = pygame.image.load("skins/over1_s.png")
-		self.skin_over2 = pygame.image.load("skins/over2_s.png")
-		self.skin_over3 = pygame.image.load("skins/over3_s.png")
 
 		self.speed = 2
 		self.power = False

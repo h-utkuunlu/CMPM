@@ -5,6 +5,10 @@ import board
 from time import sleep
 from random import choice, randint
 
+pygame.init()
+screen = pygame.display.set_mode((57*20, 31*20 + 2*20))
+big_font = pygame.font.Font(None, 40)
+
 def monster_spawn(side):
 	"""
 	Spawns a monster at the specified side of the board
@@ -21,9 +25,40 @@ def endgame(pacman):
 	"""
 	Function to take care of the end game sequence of events
 	"""
+	skin_list = pacman.skin_over
+	direction = pacman.dir
+	
+	pacman.screen.fill((0, 0, 0))
+	
+	for skin in skin_list:
+		if pacman.dir == "up":
+			#print("Showing")
+			skin_blit = pygame.transform.rotate(skin, 90)
+		
+		elif pacman.dir == "down":	
+			skin_blit = pygame.transform.rotate(skin, -90)
+	
+		elif pacman.dir == "left":
+			skin_blit = pygame.transform.rotate(skin, 180)
+	
+		elif pacman.dir == "right":
+			skin_blit = skin
+			
+		pacman.screen.blit(skin_blit, (pacman.rect.topleft[0], pacman.rect.topleft[1]))
+		pygame.display.update()
+		sleep(1)
+		pygame.draw.rect(pacman.screen, (0, 0, 0), pacman.rect)
+	
+	if pacman.side:
+		gg = big_font.render("Game Over. Player on the right lost", True, (255, 255, 255))
+	else:
+		gg = big_font.render("Game Over. Player on the left lost", True, (255, 255, 255))
+	
+	screen.blit(gg, (350, 200))
+	pygame.display.update()
+	sleep(2)
 
-pygame.init()
-screen = pygame.display.set_mode((57*20, 31*20 + 2*20))
+
 
 #Create maze
 
@@ -49,6 +84,32 @@ play = True
 loser = None
 power_up_timer = 500
 
+# Start screen
+screen.fill((0, 0, 0))
+
+start = big_font.render("Competitive Multiplayer PAC MAN", True, (255, 255, 255))
+start2 = big_font.render("Starts in...", True, (255, 255, 255))
+
+screen.blit(start, (300, 200))
+screen.blit(start2, (300, 250))
+pygame.display.update()
+sleep(1)
+
+screen.blit(big_font.render("3", True, (255, 255, 255)), (550, 300))
+pygame.display.update()
+sleep(1)
+
+screen.fill((0, 0, 0))
+screen.blit(big_font.render("2", True, (255, 255, 255)), (550, 200))
+pygame.display.update()
+sleep(1)
+
+screen.fill((0, 0, 0))
+screen.blit(big_font.render("1", True, (255, 255, 255)), (550, 200))
+pygame.display.update()
+sleep(1)
+
+screen.fill((0, 0, 0))
 #Main
 
 while play:
@@ -155,14 +216,14 @@ while play:
 		monster_catch = pacman0.rect.collidelist(left_monsters)
 		
 		if monster_catch != -1:
-			game_over = pacman0
+			loser = pacman0
 			play = False
 	
 	if right_monsters and not pacman1.power:
 		monster_catch = pacman1.rect.collidelist(right_monsters)
 		
 		if monster_catch != -1:
-			game_over = pacman1
+			loser = pacman1
 			play = False
 	
 	# Check if the pacman is collecting the dots
@@ -230,5 +291,5 @@ while play:
 # Game over adjustments
 
 endgame(loser)
-				
+
 	
