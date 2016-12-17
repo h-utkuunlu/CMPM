@@ -28,11 +28,6 @@ Contains the Monster class that includes all features of the monsters. Note that
 	5) pacman.py
 Contains the PacMan class that includes all features of the pacman.
 
-	6) shortest_path.py
-The file contains all the functions that are used by the monsters to find the shortest path to the PAC-MAN.
-	
-	
-
 #RUNNING THE PROGRAM:
 Simply run the main.py file in the terminal once you have all the components liisted above in the same directory.
 
