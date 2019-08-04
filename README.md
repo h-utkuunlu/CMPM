@@ -3,7 +3,7 @@ Competitive Multiplayer PAC-MAN
 Developers: Halil Utku Unlu and Stefan Niehaus
 
 #PURPOSE:
-The purpose of developing Competitive Multiplayer PAC-MAN (abreviated at CMPM) was to put a twist on the traditional Pac-Man game. 
+The purpose of developing Competitive Multiplayer PAC-MAN (abbreviated at CMPM) was to put a twist on the traditional Pac-Man game. 
 
 Although the features and skins of the game remained predominantly the same with the initial game play, the board was extended to accomodate for two users and, hence, two PAC-MANs. 
 
