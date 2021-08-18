@@ -1,17 +1,15 @@
-Competitive Multiplayer PAC-MAN
+# Competitive Multiplayer PAC-MAN
 
-Developers: Halil Utku Unlu and Stefan Niehaus
+## Purpose
+The purpose of developing Competitive Multiplayer PAC-MAN (abbreviated as CMPM) was to put a twist on the traditional PAC-MAN game. 
 
-#PURPOSE:
-The purpose of developing Competitive Multiplayer PAC-MAN (abreviated at CMPM) was to put a twist on the traditional Pac-Man game. 
-
-Although the features and skins of the game remained predominantly the same with the initial game play, the board was extended to accomodate for two users and, hence, two PAC-MANs. 
+Although the features and skins of the game remained predominantly the same with the original game, the board was extended to accomodate for two users and, hence, two PAC-MANs. 
 
 The goal of an individual PAC-MAN is to "eat" all the dots on it's side of the board. Once all dots are eaten, a large red dot will spawn on the the PAC-MAN's side of the board, which, once eaten, makes it indestructible and able to eat the ghosts. Interestingly, once the ghost is eaten, the ghost does not simply disappear, but spaws on the other PAC-MAN's board (the opponent) to exact revenge. 
 
 Therefore, eat dots and eat them fast!
 
-#COMPONENTS:
+## Components
 	1) main.py
 The main.py file imports components 3, 4, 5, and 6 and runs the game.
 
@@ -28,6 +26,7 @@ Contains the Monster class that includes all features of the monsters. Note that
 	5) pacman.py
 Contains the PacMan class that includes all features of the pacman.
 
-#RUNNING THE PROGRAM:
-Simply run the main.py file in the terminal once you have all the components liisted above in the same directory.
+## Running the program
+Simply run the main.py file in the terminal once you have all the components listed above in the same directory.
 
+###### Developers: Halil Utku Unlu and Stefan Niehaus
